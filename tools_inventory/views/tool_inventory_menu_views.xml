@@ -1,0 +1,11 @@
+<!-- Here are defined menus so users can access the views -->
+<odoo>
+    <menuitem id="menu_tool_inventory_root" name="Tools Inventory" action="action_tool_inventory" web_icon="tools_inventory,static/description/icon.png" sequence="10" />
+    
+    <menuitem id="menu_tool_inventory" name="Tools" parent="menu_tool_inventory_root"
+        action="action_tool_inventory" />
+    <menuitem id="menu_tool_categories" name="Categories" parent="menu_tool_inventory_root"
+        action="action_tool_category" />
+    <menuitem id="menu_inventory_movements" name="Movements" parent="menu_tool_inventory_root"
+        action="action_inventory_movement" />
+</odoo>

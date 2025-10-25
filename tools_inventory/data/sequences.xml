@@ -1,0 +1,18 @@
+<odoo>
+    <data>
+        <record id="seq_tool_code" model="ir.sequence">
+            <field name="name">Tool Code</field>
+            <field name="code">tool.inventory</field>
+            <field name="prefix">TCOD-</field>
+            <field name="padding">4</field>
+        </record>
+    </data>
+    <data>
+        <record id="seq_movement_code" model="ir.sequence">
+            <field name="name">Inventory Movement</field>
+            <field name="code">inventory.movement</field>
+            <field name="prefix">INMOV-</field>
+            <field name="padding">4</field>
+        </record>
+    </data>
+</odoo>

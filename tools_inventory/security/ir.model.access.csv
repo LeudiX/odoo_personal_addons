@@ -1,0 +1,10 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_tool_user,Tool User,model_tool_inventory,group_tool_user,1,0,0,0
+access_tool_manager,Tool Manager,model_tool_inventory,group_tool_manager,1,1,1,0
+access_tool_admin,Tool Admin,model_tool_inventory,group_tool_admin,1,1,1,1
+access_movement_user,Tool User,model_inventory_movement,group_tool_user,1,0,0,0
+access_movement_manager,Tool Manager,model_inventory_movement,group_tool_manager,1,1,1,0
+access_movement_admin,Tool Admin,model_inventory_movement,group_tool_admin,1,1,1,1
+access_category_user,Tool User,model_tool_category,group_tool_user,1,0,0,0
+access_category_manager,Tool Manager,model_tool_category,group_tool_manager,1,1,1,0
+access_category_admin,Tool Admin,model_tool_category,group_tool_admin,1,1,1,1

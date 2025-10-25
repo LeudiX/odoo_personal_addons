@@ -1,0 +1,23 @@
+<!--To manage permissions, I define user roles and access rights-->
+<odoo>
+    <data>
+        <!--Tools User Read Only -->
+        <record id="group_tool_user" model="res.groups">
+            <field name="name">Tool User</field>
+            <field name="category_id" ref="base.module_category_inventory"/>
+        </record>
+
+        <!-- Tool Manager (Create/Edit) -->
+        <record id="group_tool_manager" model="res.groups">
+            <field name="name">Tool Manager</field>
+            <field name="category_id" ref="base.module_category_inventory"/>
+        </record>
+
+        <!-- Tool Admin (Full Control) -->
+        <record id="group_tool_admin" model="res.groups">
+            <field name="name">Tool Admin</field>
+            <field name="category_id" ref="base.module_category_inventory"/>
+            <field name="implied_ids" eval="[(4, ref('group_tool_manager'))]"/>
+        </record>
+    </data>
+</odoo>
