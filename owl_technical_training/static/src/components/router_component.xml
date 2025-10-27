@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="router_component_template" xml:space="preserve">
+    <t t-name="owl_technical_training.router_component" owl="1">
+        <div class="d-flex align-items-center">
+            <div class="col-md-4 px-4">
+                <button class="btn btn-outline-info rounded-pill px-4" t-on-click="() => this.switchApp('standalone_app')">Standalone App</button>
+                <!--<button t-on-click="() => this.switchExample('example2')">Example 2</button>-->
+            </div>
+            <div class="col-md-8">
+                <t t-component="CurrentAppComponent"/>
+            </div>
+        </div>
+    </t>
+</templates>

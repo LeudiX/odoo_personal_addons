@@ -1,0 +1,22 @@
+.dropdown-menu.js_usermenu a.dropdown-item {
+    color: #17a2b8 !important;
+}
+
+.dropdown-menu.js_usermenu a.dropdown-item i {
+    color: #17a2b8 !important;
+}
+
+.dropdown-menu.js_usermenu a.dropdown-item:hover,
+.dropdown-menu.js_usermenu a.dropdown-item:focus,
+.dropdown-menu.js_usermenu a.dropdown-item:active {
+    color: #fff !important;
+    text-decoration: none;
+    background-color: #17a2b8 !important;
+}
+
+/* Style the icon INSIDE those states */
+.dropdown-menu.js_usermenu a.dropdown-item:hover i,
+.dropdown-menu.js_usermenu a.dropdown-item:focus i,
+.dropdown-menu.js_usermenu a.dropdown-item:active i {
+    color: #fff !important;
+}
