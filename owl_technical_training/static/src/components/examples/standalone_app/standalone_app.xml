@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="owl_technical_training.standalone_app">
+        <div class="container-fluid">
+            <div class="d-block align-items-center ">
+                <h3 class="text-center text-warning">✅ Standalone App Loaded!</h3>
+                <p class="text-center text-gray">This is rendered inside RouterComponent</p>
+            </div>
+        </div>
+    </t>
+</templates>
