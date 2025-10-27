@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- 1. Overriding page title and head -->
+    <template id="owl_custom_website_layout" inherit_id="website.layout" name="OWL Tutorials Layout">
+        <!-- Replacing page title -->
+        <xpath expr="//t[@t-set='title']" position="replace">
+            <t t-set="title">OWL Tutorials</t>
+        </xpath>
+
+        <!-- Optional: Adding custom meta or styles -->
+        <xpath expr="//head" position="inside">
+            <meta name="description" content="Interactive OWL component tutorials for Odoo 17" />
+            <!-- Custom CSS (optional)-->
+            <link rel="stylesheet" href="/owl_technical_training/static/src/css/custom.css"/>
+        </xpath>
+
+        <!-- Replacing default navbar -->
+        <xpath expr="//header" position="replace">
+            <header>
+                <!-- Navbar -->
+                <t t-call="owl_technical_training.owl_custom_navbar" />
+            </header>
+        </xpath>
+
+        <!-- Replacing default footer -->
+        <xpath expr="//footer" position="replace">
+            <t t-call="owl_technical_training.owl_custom_footer" />
+        </xpath>
+    </template>
+
+    <!-- 2. Custom Navbar -->
+    <template id="owl_custom_navbar" name="Custom OWL Navbar">
+         <t t-set="is_logged_in" t-value="not request.env.user._is_public()" />
+         <t t-set="current_path" t-value="request.httprequest.path" />
+        <nav class="navbar navbar-expand-md navbar-dark bg-info px-lg-3">
+            <div class="container">
+                <a class="navbar-brand text-white" href="/">OWL Tutorials</a>
+                <!--Shop Link-->
+                <t t-if="is_logged_in">
+                    <div class="nav-item ml-auto mb-2 mb-lg-0 d-md-none">
+                        <a class="text-white fs-6 nav-link" href="/shop/cart">
+                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </t>
+               <!-- Nav list for small screens (before toggler, outside collapse) -->
+                <ul class="navbar-nav mb-2 mb-lg-0 d-md-none">
+                    <!-- User Dropdown -->
+                    <t t-if="is_logged_in">
+                        <t t-call="portal.user_dropdown">
+                            <t t-set="_icon" t-value="true" />
+                            <t t-set="_user_name" t-value="true" />
+                            <t t-set="_user_name_class" t-valuef="me-auto small text-white" />
+                            <t t-set="_link_class"
+                                t-valuef="btn btn-outline d-flex align-items-center text-white border-0 px-2" />
+                            <t t-set="_icon_class" t-valuef="me-2 text-white" />
+                            <t t-set="_item_class" t-valuef="dropdown text-white" />
+                            <t t-set="_dropdown_menu_class" t-valuef="w-70" />
+                        </t>
+                    </t>
+                    <!-- Botón de login si no está autenticado -->
+                    <li class="nav-item"
+                        t-if="not is_logged_in and current_path != '/web/login'"
+                        t-else="">
+                        <a class="text-dark fs-6 nav-link" href="/web/login">
+                            <i class="fas fa-sign-in-alt mr-3"></i>Iniciar sesión</a>
+                    </li>
+                </ul>
+                <!-- Toggler -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon text-white"></span>
+                </button>
+                <!-- Collapse -->
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="/">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="/tutorials/example1">Example 1</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="/tutorials/standalone">Standalone
+                                App</a>
+                        </li>
+                    </ul>
+                </div>
+                <!--Shop Link-->
+                <t t-if="is_logged_in">
+                    <div class="nav-item ml-auto mb-2 mb-lg-0 d-none d-md-flex">
+                        <a class="text-white fs-6 nav-link" href="/shop/cart">
+                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </t>
+                <!-- Nav list for biggers screens (before toggler, outside collapse) -->
+                 <ul class="navbar-nav mb-2 mb-lg-0 d-none d-md-flex">
+                    <!-- User Dropdown -->
+                    <t t-if="is_logged_in">
+                        <t t-call="portal.user_dropdown">
+                            <t t-set="_icon" t-value="true" />
+                            <t t-set="_user_name" t-value="true" />
+                            <t t-set="_user_name_class" t-valuef="me-auto small text-white" />
+                            <t t-set="_link_class"
+                                t-valuef="btn btn-outline d-flex align-items-center text-white border-0 px-2" />
+                            <t t-set="_icon_class" t-valuef="me-2 text-white" />
+                            <t t-set="_item_class" t-valuef="dropdown text-white" />
+                            <t t-set="_dropdown_menu_class" t-valuef="w-70" />
+                        </t>
+                    </t>
+                    <!-- Botón de login si no está autenticado -->
+                    <li class="nav-item"
+                        t-if="not is_logged_in and current_path != '/web/login'"
+                        t-else="">
+                        <a class="text-dark fs-6 nav-link" href="/web/login">
+                            <i class="fas fa-sign-in-alt mr-3"></i>Iniciar sesión</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </template>
+
+    <!-- 3. Custom Footer -->
+    <template id="owl_custom_footer" name="Custom OWL Footer">
+        <footer class="bg-light py-4 mt-5">
+            <div class="container text-center">
+                <p class="mb-0">Built with ❤️ using Odoo 17 &amp; OWL</p>
+                <p class="text-muted">© 2025 OWL Tutorials</p>
+            </div>
+        </footer>
+    </template>
+
+    <!-- 4. Overriding website homepage to use custom layout -->
+    <template id="owl_base_template" name="OWL Tutorials Home Template"
+        inherit_id="website.homepage"
+        priority="20">
+        <xpath expr="//div[@id='wrap']" position="replace">
+            <div id="wrap" class="oe_structure">
+
+                <section id="tutorials" class="py-5">
+                    <owl-component name="owl_technical_training.RouterComponent" />
+                </section>
+
+            </div>
+        </xpath>
+    </template>
+
+</odoo>
