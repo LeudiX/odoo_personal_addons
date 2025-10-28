@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
+
     <!-- 1. Overriding page title and head -->
-    <template id="owl_custom_website_layout" inherit_id="website.layout" name="OWL Tutorials Layout">
-        <!-- Replacing page title -->
-        <xpath expr="//t[@t-set='title']" position="replace">
-            <t t-set="title">OWL Tutorials</t>
+    <template id="owl_custom_website_layout" inherit_id="web.frontend_layout"
+        name="OWL Tutorials Layout">
+        <!-- Replacing page default title -->
+        <xpath expr="//t[@t-set='default_title']" position="replace">
+            <t t-set="default_title">OWL Tutorials</t>
         </xpath>
 
         <!-- Optional: Adding custom meta or styles -->
         <xpath expr="//head" position="inside">
             <meta name="description" content="Interactive OWL component tutorials for Odoo 17" />
             <!-- Custom CSS (optional)-->
-            <link rel="stylesheet" href="/owl_technical_training/static/src/css/custom.css"/>
+            <link rel="stylesheet" href="/owl_technical_training/static/src/css/custom.css" />
         </xpath>
 
         <!-- Replacing default navbar -->
@@ -23,6 +25,20 @@
             </header>
         </xpath>
 
+
+        <!-- Replacing main content -->
+        <xpath expr="//main" position="replace">
+            <main class="container-fluid m-0 px-0 pt-4">
+                <!-- Breadcrumbs -->
+                <!-- <t t-if="is_logged_in">
+                    <t t-call="pyxel_dcomerx_custom_web_theme.breadcrumbs"/>
+                </t> -->
+
+                <!-- Main Content -->
+                <t t-out="0" />
+            </main>
+        </xpath>
+
         <!-- Replacing default footer -->
         <xpath expr="//footer" position="replace">
             <t t-call="owl_technical_training.owl_custom_footer" />
@@ -31,12 +47,13 @@
 
     <!-- 2. Custom Navbar -->
     <template id="owl_custom_navbar" name="Custom OWL Navbar">
-         <t t-set="is_logged_in" t-value="not request.env.user._is_public()" />
-         <t t-set="current_path" t-value="request.httprequest.path" />
+        <t t-set="is_logged_in" t-value="not request.env.user._is_public()" />
+        <t t-set="current_path" t-value="request.httprequest.path" />
         <nav class="navbar navbar-expand-md navbar-dark bg-info px-lg-3">
             <div class="container">
                 <a class="navbar-brand text-white" href="/">OWL Tutorials</a>
-                <!--Shop Link-->
+                <!--Shop
+                Link-->
                 <t t-if="is_logged_in">
                     <div class="nav-item ml-auto mb-2 mb-lg-0 d-md-none">
                         <a class="text-white fs-6 nav-link" href="/shop/cart">
@@ -44,7 +61,7 @@
                         </a>
                     </div>
                 </t>
-               <!-- Nav list for small screens (before toggler, outside collapse) -->
+                <!-- Nav list for small screens (before toggler, outside collapse) -->
                 <ul class="navbar-nav mb-2 mb-lg-0 d-md-none">
                     <!-- User Dropdown -->
                     <t t-if="is_logged_in">
@@ -87,7 +104,8 @@
                         </li>
                     </ul>
                 </div>
-                <!--Shop Link-->
+                <!--Shop
+                Link-->
                 <t t-if="is_logged_in">
                     <div class="nav-item ml-auto mb-2 mb-lg-0 d-none d-md-flex">
                         <a class="text-white fs-6 nav-link" href="/shop/cart">
@@ -96,7 +114,7 @@
                     </div>
                 </t>
                 <!-- Nav list for biggers screens (before toggler, outside collapse) -->
-                 <ul class="navbar-nav mb-2 mb-lg-0 d-none d-md-flex">
+                <ul class="navbar-nav mb-2 mb-lg-0 d-none d-md-flex">
                     <!-- User Dropdown -->
                     <t t-if="is_logged_in">
                         <t t-call="portal.user_dropdown">
@@ -133,18 +151,15 @@
     </template>
 
     <!-- 4. Overriding website homepage to use custom layout -->
-    <template id="owl_base_template" name="OWL Tutorials Home Template"
+    <template id="owl_home_template" name="OWL Tutorials Home Template"
         inherit_id="website.homepage"
         priority="20">
         <xpath expr="//div[@id='wrap']" position="replace">
             <div id="wrap" class="oe_structure">
-
-                <section id="tutorials" class="py-5">
+                <section id="homepage" class="py-5">
                     <owl-component name="owl_technical_training.RouterComponent" />
                 </section>
-
             </div>
         </xpath>
     </template>
-
 </odoo>

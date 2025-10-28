@@ -7,7 +7,10 @@
     "website": "",
     "category": "Hidden",
     "depends": ["base", "web", "website"],
-    "data": ["views/main.xml"],
+    "data": [
+        "views/main.xml",
+        "views/generic.xml"
+        ],
     "assets": {
         "web.assets_frontend": [
             "owl_technical_training/static/src/**/*.js",
