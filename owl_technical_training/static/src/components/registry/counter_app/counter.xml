@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="owl_technical_training.counter_app">
+        <div class="container-fluid">
+            <div class="d-block align-items-center text-center">
+                <p>Counter: <t t-esc="state.value"/>
+                </p>
+                <button class="btn btn-primary" t-on-click="increment">Increment</button>
+            </div>
+        </div>
+    </t>
+</templates>

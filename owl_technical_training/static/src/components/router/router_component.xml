@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="router_component_template" xml:space="preserve">
+    <t t-name="owl_technical_training.router_component" owl="1">
+        <t t-log="props.appId"/>
+        <t t-if="!props.appId">
+            <div class="container-fluid p-2">
+                <div class="row">
+                    <!--Sidebar Demos List -->
+                    <div class="col-md-3">
+                        <div class="list-group">
+                            <t t-foreach="Object.values(this.registry)" t-as="app" t-key="app.id">
+                                <button t-att-class="{
+                            'list-group-item': true,
+                            'list-group-item-primary': this.state.currentApp == app.id,
+                            'list-group-item-action': true
+                            }" t-on-click="()=> this.switchApp(app.id)">
+                                    <t t-esc="app.title"/>
+                                </button>
+                            </t>
+                        </div>
+                    </div>
+                    <!--Details: Selected Demo-->
+                    <div class="col-md-9">
+                        <div class="card">
+                            <div class="card-body">
+                                <h3 class="card-title" t-esc=" this.currentAppComponent.title"/>
+                                <p class="card-text" t-esc="this.currentAppComponent.description"/>
+                                <!--Link to route-->
+                                <a t-att-href="this.currentAppComponent.route" class="btn btn-outline-primary rounded-pill px-4">
+                                See Full Demo 
+                                </a>
+                                <!--Rendering Live OWL component-->
+                                <hr/>
+                                <t t-component="this.currentAppComponent.component"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+        <t t-else="">
+            <div class="container-fluid p-2">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 t-esc="this.currentAppComponent.title"/>
+                    </div>
+                    <div class="card-body">
+                        <t t-component="this.currentAppComponent.component"/>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </t>
+</templates>

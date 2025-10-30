@@ -51,7 +51,7 @@
         <t t-set="current_path" t-value="request.httprequest.path" />
         <nav class="navbar navbar-expand-md navbar-dark bg-info px-lg-3">
             <div class="container">
-                <a class="navbar-brand text-white" href="/">OWL Tutorials</a>
+                <a class="navbar-brand text-white" href="/">OWL 🦉 Tutorials</a>
                 <!--Shop
                 Link-->
                 <t t-if="is_logged_in">
@@ -96,10 +96,7 @@
                             <a class="nav-link text-white" href="/">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" href="/tutorials/example1">Example 1</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white" href="/tutorials/standalone">Standalone
+                            <a class="nav-link text-white" href="/tutorials/standalone_app">Standalone
                                 App</a>
                         </li>
                     </ul>
@@ -156,7 +153,7 @@
         priority="20">
         <xpath expr="//div[@id='wrap']" position="replace">
             <div id="wrap" class="oe_structure">
-                <section id="homepage" class="py-5">
+                <section id="homepage" class="py-2">
                     <owl-component name="owl_technical_training.RouterComponent" />
                 </section>
             </div>

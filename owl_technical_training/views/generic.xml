@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="owl_tutorial_template" name="OWL Tutorials Generic Template">
+    <template id="owl_generic_template" name="OWL Tutorials Generic Template">
         <t t-call="owl_technical_training.owl_custom_website_layout">
             <div id="wrap" class="oe_structure">
-                <section id="tutorials" class="py-5">
-                    <owl-component name="owl_technical_training.RouterComponent" />
+                <!-- Passing the appId python variable as a prop to the  OWL component -->
+                <section id="tutorials" class="py-2">
+                    <owl-component name="owl_technical_training.RouterComponent" t-att-props="json.dumps({'appId': appId})"/>
                 </section>
             </div>
         </t>
