@@ -11,7 +11,7 @@
                             <t t-foreach="Object.values(this.registry)" t-as="app" t-key="app.id">
                                 <button t-att-class="{
                             'list-group-item': true,
-                            'list-group-item-primary': this.state.currentApp == app.id,
+                            'list-group-item-primary': this.state.currentApp === app.id,
                             'list-group-item-action': true
                             }" t-on-click="()=> this.switchApp(app.id)">
                                     <t t-esc="app.title"/>

@@ -1,5 +1,6 @@
 /** @odoo-module **/
 import { CounterApp } from "./counter_app/counter";
+import { ReactiveForm } from "./reactive_form_app/reactive_form";
 import { StandaloneApp } from "./standalone_app/standalone_app";
 
 
@@ -17,5 +18,12 @@ export const COMPONENTS_REGISTRY = {
         description: 'A minimal counter OWL component ',
         component: CounterApp,
         route: 'tutorials/counter_app',
+    },
+    reactive_form_app: {
+        id: 'reactive_form_app',
+        title: 'Reactive Form App',
+        description: 'A simple reactive OWL form wizard component to show the utility of useState vs reactive() in Odoo 17 public components registry for UI purposes',
+        component: ReactiveForm,
+        route: 'tutorials/reactive_form_app',
     },
 }
