@@ -7,6 +7,7 @@ REGISTRY_IDS = [
     "standalone_app",
     "counter_app",
     "reactive_form_app",
+    "persistent_form_app",
 ]  # Keep in sync with JS
 
 
