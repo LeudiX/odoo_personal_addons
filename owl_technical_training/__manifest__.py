@@ -13,6 +13,7 @@
         ],
     "assets": {
         "web.assets_frontend": [
+            "owl_technical_training/static/lib/**/qrcode.bundle.js",
             "owl_technical_training/static/src/**/*.js",
             "owl_technical_training/static/src/**/*.xml",
         ],

@@ -1,6 +1,7 @@
 /** @odoo-module **/
 import { CounterApp } from "./counter_app/counter";
 import { PersistentForm } from "./persistent_form_app/persistent_form";
+import { QRGenerator } from "./qr_generator_app/qr_generator";
 import { ReactiveForm } from "./reactive_form_app/reactive_form";
 import { StandaloneApp } from "./standalone_app/standalone_app";
 
@@ -33,5 +34,12 @@ export const COMPONENTS_REGISTRY = {
         description: 'A simple reactive OWL form component to show the concepts of reactivity, custom hooks development, lifecycle awareness and LocalStorage management',
         component: PersistentForm,
         route: 'tutorials/persistent_form_app',
+    },
+    qr_generator_app: {
+        id: 'qr_generator_app',
+        title: 'QR Generator App',
+        description: 'A simple reactive OWL QR Generator component to show the concepts of reactivity, lifecycle awareness, forms validations and QRCode library management',
+        component: QRGenerator,
+        route: 'tutorials/qr_generator_app',
     },
 }

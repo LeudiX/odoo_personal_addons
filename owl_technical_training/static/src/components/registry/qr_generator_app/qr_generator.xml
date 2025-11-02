@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="owl_technical_training.qr_generator">
+        <div class="qr-generator card p-4">
+            <h4>🪄 QR Code Generator</h4>
+
+            <div class="mb-3">
+                <input type="text" class="form-control" t-att-value="state.input" t-on-input="(ev) => this.state.input = ev.target.value" placeholder="Enter URL or credit card number" />
+            </div>
+
+            <p class="alert alert-danger" t-if="state.error" role="alert">
+                <t t-esc="state.error"/>
+            </p>
+
+            <div class="d-flex gap-2 mb-3">
+                <button class="btn btn-primary" t-on-click="() => this.generateQr()">
+                Generate QR
+                </button>
+                <button class="btn btn-secondary" t-on-click="() => this.reset()">
+                Reset
+                </button>
+            </div>
+
+            <t t-if="state.qrDataUrl">
+                <div class="text-center">
+                    <img t-att-src="state.qrDataUrl" alt="QR Code" class="img-fluid border"/>
+                    <p class="mt-2 text-info">Scan this QR code😋!</p>
+                </div>
+            </t>
+        </div>
+    </t>
+</templates>

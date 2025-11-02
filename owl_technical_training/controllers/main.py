@@ -8,6 +8,7 @@ REGISTRY_IDS = [
     "counter_app",
     "reactive_form_app",
     "persistent_form_app",
+    "qr_generator_app",
 ]  # Keep in sync with JS
 
 
