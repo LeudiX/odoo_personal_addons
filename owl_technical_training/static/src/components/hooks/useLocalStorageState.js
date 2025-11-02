@@ -5,43 +5,47 @@ import { useState, onWillStart, onWillUnmount } from "@odoo/owl";
  *  A custom hook that sync reactive with useState
  * 
  * @param {string} key - The LocalStorage key to use
- * @param {object} initialValue - The default state value
+ * @param {object} defaultValue - The default state value
  * @returns {Object} - The reactive state synchronized with LocalStorage
  */
 
-export function useLocalStorageState(key, initialValue = {}) {
+export function useLocalStorageState(key, defaultValue = {}) {
+
+    console.log(`[useLocalStorageState] Hook initialized with key: ${key}`);
+
+    let saved = {};
+
     // Load from LocalStorage of fallback to default
-    const saved = localStorage.getItem(key); // Restores previous data
-    const state = useState(saved ? JSON.parse(saved) : initialValue); // Making the object reactive
+    try {
+        const raw = localStorage.getItem(key); // Restores previous data
+        saved = raw ? JSON.parse(raw) : defaultValue;
+        console.log(`[useLocalStorageState] Loaded initial value from localStorage:`, saved);
+    } catch (err) {
+        console.error(`[useLocalStorageState] Failed to parse localStorage data:`, err);
+        saved = defaultValue;
+    }
 
-    // Save whenever the state changes
-    const save = () => localStorage.setItem(key, JSON.stringify(state));
+    const state = useState(saved); // Making the object reactive
 
-    //Setup side effects
-    onWillStart(() => {
-        // Listening for external changes (other tabs)
-        window.addEventListener("storage", (ev) => {
-            if (ev.key === key && ev.newValue) {
-                Object.assign(state, JSON.parse(ev.newValue));
-            }
-        });
-    });
+    // Step 3: Watch for changes and persist to localStorage
+    const saveToStorage = () => {
+        try {
+            localStorage.setItem(key, JSON.stringify(state));
+            console.log(`[useLocalStorageState] Saved to localStorage:`, state);
+        } catch (err) {
+            console.error(`[useLocalStorageState] Failed to save to localStorage:`, err);
+        }
+    };
+
 
     //Cleanup
     onWillUnmount(() => {
-        save();
-        window.removeEventListener("storage", save);
+        console.log(`[useLocalStorageState] Component unmounting. Saving state...`);
+        saveToStorage();
     });
 
-    // Watching for any property change
-    // (OWL automatically re-renders when a reactive property changes)
-    new Proxy(state, {
-        set(target, prop, value) {
-            target[prop] = value;
-            save();
-            return true;
-        },
-    });
+    // Optional: Saving periodically or via user interaction
+    window.addEventListener("beforeunload", saveToStorage);
 
-    return state;
+    return { state, saveToStorage };
 }

@@ -1,26 +1,29 @@
-<t t-name="owl_technical_training.persistent_form" owl="1">
-    <div class="container mt-5">
-        <h4>🧠 Persistent Form Example</h4>
-        <p>Reload the page — your data will still be here!</p>
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="owl_technical_training.persistent_form">
+        <div class="container mt-5">
+            <h4>🧠 Persistent Form Example</h4>
+            <p>Reload the page — your data will still be here!</p>
 
-        <div class="form-group mb-2">
-            <label>Name:</label>
-            <input type="text" class="form-control" t-model="state.name"/>
-        </div>
+            <div class="form-group mb-2">
+                <label>Name:</label>
+                <input type="text" class="form-control" t-model="storage.state.name" t-on-input="(ev) => this.onInputChange(ev, 'name')"/>
+            </div>
 
-        <div class="form-group mb-2">
-            <label>Email:</label>
-            <input type="email" class="form-control" t-model="state.email"/>
-        </div>
+            <div class="form-group mb-2">
+                <label>Email:</label>
+                <input type="email" class="form-control" t-model="storage.state.email" t-on-input="(ev) => this.onInputChange(ev, 'email')"/>
+            </div>
 
-        <div class="form-group mb-3">
-            <label>Age:</label>
-            <input type="number" class="form-control" t-model="state.age"/>
-        </div>
+            <div class="form-group mb-3">
+                <label>Age:</label>
+                <input type="number" class="form-control" t-model="storage.state.age" t-on-input="(ev) => this.onInputChange(ev, 'age')"/>
+            </div>
 
-        <div class="d-flex gap-2">
-            <button t-on-click="notify" class="btn btn-success">Save</button>
-            <button t-on-click="reset" class="btn btn-secondary">Reset</button>
+            <div class="d-flex gap-2">
+                <button t-on-click="notify" class="btn btn-success">Save</button>
+                <button t-on-click="reset" class="btn btn-secondary">Reset</button>
+            </div>
         </div>
-    </div>
-</t>
+    </t>
+</templates>

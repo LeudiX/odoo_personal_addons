@@ -12,21 +12,29 @@ export class PersistentForm extends Component {
         this.notification = useService("notification");
 
         // useLocalStorageState custom hook
-        this.state = useLocalStorageState("persistent_form", {
+        this.storage = useLocalStorageState("user_profile", {
             name: "",
             email: "",
             age: "",
         });
     }
 
+    onInputChange(ev, field) {
+        this.storage.state[field] = ev.target.value;
+        console.log(`[PersistentForm] Updated state.${field}:`, this.storage.state[field]);
+        this.storage.saveToStorage(); // immediate save on change
+    }
+
     reset() {
-        this.state.name = "";
-        this.state.email = "";
-        this.state.age = "";
+        this.storage.state.name = "";
+        this.storage.state.email = "";
+        this.storage.state.age = "";
+        this.storage.saveToStorage();
+        console.log(`[PersistentForm] State reset and saved`);
     }
 
     notify() {
-        this.notification.add(_t(`Hi ${this.state.name}!. Your data persisted in LocalStorage!!`),
+        this.notification.add(_t(`Hi ${this.storage.state.name}!. Your data persisted in LocalStorage!!`),
             { title: "Persitent State", type: "success" }
         );
     }
