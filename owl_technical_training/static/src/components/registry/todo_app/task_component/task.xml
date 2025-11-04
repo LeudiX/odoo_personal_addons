@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="owl_technical_training.task">
+        <div class="p-2 border rounded shadow max-w-md mx-auto mt-2 bg-white">
+            <div class="d-flex gap-2 p-2 align-items-center">
+                <input type="checkbox" class="form-control-sm" t-att-id="props.task.id" t-att-checked="props.task.isCompleted" t-on-click="() => props.store.toggleTask(props.task)"/>
+                <label class="text-primary" t-att-for="props.task.id">
+                    <t t-esc="props.task.title"/>
+                </label>
+                <span class="btn btn-sm btn-outline-danger" t-on-click="() => props.store.deleteTask(props.task)">
+                <i class="fa fa-trash"/>
+                </span>
+            </div>
+        </div>
+    </t>
+</templates>    

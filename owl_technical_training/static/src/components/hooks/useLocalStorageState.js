@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { useState, onWillStart, onWillUnmount } from "@odoo/owl";
+import { useState, onWillUnmount } from "@odoo/owl";
 /**
  *  A custom hook that sync reactive with useState
  * 
