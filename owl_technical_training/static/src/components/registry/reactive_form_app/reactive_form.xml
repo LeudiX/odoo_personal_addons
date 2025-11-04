@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="owl_technical_training.reactive_form">
+        <div class="p-4 border rounded shadow max-w-md mx-auto mt-10 bg-white">
+            <t t-if="state.step === 1">
+                <div>
+                    <h2 class="text-xl font-bold mb-4">Step 1: Enter your name</h2>
+                    <input type="text" t-model="state.name" placeholder="Name" name="name" class="w-50 border p-2 rounded mb-2" t-att-required="true" />
+                    <button t-on-click="next" class="btn btn-primary text-white font-bold mx-2 py-2 px-4 rounded-pill">Continue</button>
+                </div>
+            </t>
+            <t t-elif="state.step === 2">
+                <div>
+                    <h2 class="text-xl font-bold mb-4">Step 2: Enter your email</h2>
+                    <input type="email" t-model="state.email" placeholder="Email" name="email" class="w-50 border p-2 rounded mb-2" t-att-required="true"/>
+                    <button t-on-click="next" class="btn btn-primary text-white font-bold mx-2 py-2 px-4 rounded-pill">Continue</button>
+                </div>
+            </t>
+            <t t-elif="state.step === 3">
+                <div>
+                    <h2 class="text-xl font-bold mb-4">Step 3: Enter your address</h2>
+                    <input type="text" t-model="state.address" placeholder="Address" name="address" class="w-50 border p-2 rounded mb-2" t-att-required="true"/>
+                    <button t-on-click="submit" class="btn btn-success text-white font-bold mx-2 py-2 px-4 rounded-pill">Submit</button>
+                </div>
+            </t>
+            <t t-elif="state.step === 4">
+                <div>
+                    <h2 class="text-2xl text-success fw-bold">Formulario enviado satisfactoriamente!</h2>
+                </div>
+            </t>
+        </div>
+    </t>
+</templates>
