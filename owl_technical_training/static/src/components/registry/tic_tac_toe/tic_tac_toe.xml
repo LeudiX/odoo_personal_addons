@@ -1,0 +1,6 @@
+<templates xml:space="preserve">
+    <t t-name="owl_technical_training.tic_tac_toe">
+        <h2>Hi, Im Tic Tac Toe 😋!!!</h2>
+        <Board/>
+    </t>
+</templates>

@@ -1,0 +1,37 @@
+<templates xml:space="preserve">
+    <t t-name="owl_technical_training.tic_tac_toe_board">
+        <div class="container py-4">
+            <div class="row justify-content-center mb-4">
+                <div class="col-auto text-center">
+                    <h4 class="fw-bold text-primary">❌ Let's start the fun! ⭕</h4>
+                </div>
+            </div>
+
+            <!-- Tic Tac Toe Board -->
+            <div class="row justify-content-center">
+                <div class="col-auto">
+                    <div class="border border-4 border-warning bg-primary rounded shadow p-2" style="display: inline-block;">
+                        <!-- Row 1 -->
+                        <div class="d-flex gap-1 p-1">
+                            <Square value="state.squares[0]" onClick="handleSquareClick.bind(this, 0)"/>
+                            <Square value="state.squares[1]" onClick="handleSquareClick.bind(this, 1)"/>
+                            <Square value="state.squares[2]" onClick="handleSquareClick.bind(this, 2)"/>
+                        </div>
+                        <!-- Row 2 -->
+                        <div class="d-flex gap-1 p-1">
+                            <Square value="state.squares[3]" onClick="handleSquareClick.bind(this, 3)"/>
+                            <Square value="state.squares[4]" onClick="handleSquareClick.bind(this, 4)"/>
+                            <Square value="state.squares[5]" onClick="handleSquareClick.bind(this, 5)"/>
+                        </div>
+                        <!-- Row 3 -->
+                        <div class="d-flex gap-1 p-1">
+                            <Square value="state.squares[6]" onClick="handleSquareClick.bind(this, 6)"/>
+                            <Square value="state.squares[7]" onClick="handleSquareClick.bind(this, 7)"/>
+                            <Square value="state.squares[8]" onClick="handleSquareClick.bind(this, 8)"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>
