@@ -12,6 +12,7 @@ export class Board extends Component {
         this.state = useState({
             squares: Array(9).fill(null),
             isNextX: true,
+            isOver: false,
         });
         this.notification = useService("notification");
     }
@@ -43,24 +44,42 @@ export class Board extends Component {
         return null;
     }
 
+    reset() {
+        this.state.squares = Array(9).fill(null); // Always replace state objects/arrays in OWL — never mutate them directly.
+        this.state.isOver = !this.state.isOver;
+
+        const message = `First move for: ${this.state.isNextX ? '❌' : '⭕'}!!`;
+        return this.notification.add(message, {
+            title: "Warning",
+            type: "warning",
+        });
+    }
+
     getStatus() {
         const winner = this.determineWinner(this.state.squares);
         const win_message = `🎉 Winner: ${winner}!`;
         const draw_message = `🤝 It's a draw!`;
-        const default_message = `Next: ${this.state.isNextX ? '❌' : '⭕'}!!`;
+        const default_message = `Next move: ${this.state.isNextX ? '❌' : '⭕'}!!`;
 
         if (winner) {
+            this.state.isOver = true;
             return this.notification.add(win_message, {
                 title: "Success",
                 type: "success",
-                sticky: true,
+                buttons: [{
+                    name: "New Game",
+                    primary: true,
+                    onClick: () => {
+                        this.reset();
+                    },
+                }],
             });
         }
         if (this.state.squares.every(square => square !== null)) {
+            this.state.isOver = true;
             return this.notification.add(draw_message, {
                 title: "Warning",
                 type: "warning",
-                sticky: true,
             });
         }
         return this.notification.add(default_message, {

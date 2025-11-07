@@ -30,6 +30,13 @@
                             <Square value="state.squares[8]" onClick="handleSquareClick.bind(this, 8)"/>
                         </div>
                     </div>
+                    <div class="text-center">
+                        <t t-if="state.isOver">
+                            <button t-on-click="reset" class="btn btn-outline-primary mt-3">
+                                New Game
+                            </button>
+                        </t>
+                    </div>
                 </div>
             </div>
         </div>
