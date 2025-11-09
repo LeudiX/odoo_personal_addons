@@ -1,7 +1,7 @@
 /** @odoo-module **/
 import { Component, useRef, useState, onMounted } from "@odoo/owl";
-import { Task } from "./task_component/task";
-import { createTaskStore } from "./task_component/task_list";
+import { Task } from "./components/task";
+import { createTaskStore } from "./components/task_list";
 
 export class TodoApp extends Component {
     static template = "owl_technical_training.todo_app";
@@ -29,7 +29,6 @@ export class TodoApp extends Component {
         switch (this.filter.value) {
             case "active":
                 return tasks.filter((t) => !t.isCompleted);
-                break;
             case "completed":
                 return tasks.filter((t) => t.isCompleted);
             case "all":

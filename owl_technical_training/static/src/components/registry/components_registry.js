@@ -4,6 +4,7 @@ import { PersistentForm } from "./persistent_form_app/persistent_form";
 import { QRGenerator } from "./qr_generator_app/qr_generator";
 import { ReactiveForm } from "./reactive_form_app/reactive_form";
 import { StandaloneApp } from "./standalone_app/standalone_app";
+import { TicTacToe } from "./tic_tac_toe/tic_tac_toe";
 import { TodoApp } from "./todo_app/todo_app";
 
 
@@ -49,5 +50,12 @@ export const COMPONENTS_REGISTRY = {
         description: 'A simple reactive OWL TODO List component to show the concepts of reactivity, lifecycle awareness and LocalStorage management',
         component: TodoApp,
         route: 'tutorials/todo_app',
+    },
+    tic_tac_toe: {
+        id: 'tic_tac_toe',
+        title: 'Tic Tac Toe',
+        description: 'A simple reactive OWL TicTacToe minigame component to show the concepts of reactivity, lifecycle awareness and LocalStorage management',
+        component: TicTacToe,
+        route: 'tutorials/tic_tac_toe',
     },
 }

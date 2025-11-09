@@ -10,6 +10,7 @@ REGISTRY_IDS = [
     "persistent_form_app",
     "qr_generator_app",
     "todo_app",
+    "tic_tac_toe",
 ]  # Keep in sync with JS
 
 
