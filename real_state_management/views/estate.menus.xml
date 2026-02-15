@@ -4,5 +4,9 @@
         <menuitem id="estate_advertisement_menu" name="Advertisements" sequence="5">
             <menuitem id="estate_property_menu_action" action="real_state_management.action_estate_property" sequence="5"/>
         </menuitem>
+        <menuitem id="estate_settings_menu" name="Settings" sequence="10">
+            <menuitem id="estate_property_type_menu_action" action="real_state_management.action_estate_property_type" sequence="5"/>
+            <menuitem id="estate_property_tag_menu_action" action="real_state_management.action_estate_property_tag" sequence="10"/>
+        </menuitem>
     </menuitem>
 </odoo>
