@@ -107,5 +107,22 @@ class EstateProperty(models.Model):
                 rec.living_area if not rec.garden else rec.living_area + rec.garden_area
             )
 
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = "N"
+        else:
+            self.garden_area = 0
+            self.garden_orientation = False
+            return {
+                "warning": {
+                    "title": _("Warning"),
+                    "message": (
+                        "Garden area and garden orientation fields were cleared!!"
+                    ),
+                }
+            }
+
     def _default_availability_date(self):
         return fields.Date.context_today(self) + relativedelta(months=3)

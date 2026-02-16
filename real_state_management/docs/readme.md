@@ -45,6 +45,8 @@ access some community modules. Finally, there is also the paid option
 - In our real estate module, we want to compute the best offer.
   - Add the **best_price** field to **estate.property**. It is defined as the **highest** (i.e. maximum) of the **offers’ price**.
   - Add the field to the form view as depicted in the first image of this section’s Goal.
+- In our real estate example, we can **define a validity duration** for an **offer** and **set a validity date**. We would like to be able to **set** either the **duration** or the **date** with one impacting the other.
+- In our real estate module, we also want to help the user with data entry. When the **‘garden’ field is set**, we want to give a **default value for the garden area (10)** **as well** as the **orientation (North)**. Additionally, when the ‘garden’ field is unset we want the garden area to reset to zero and the orientation to be removed.
 
 ## TIPS
 
@@ -212,3 +214,57 @@ def _compute_description(self):
     for record in self:
         record.description = "Test for partner %s" % record.partner_id.name
 ```
+
+### Inverse functions
+
+When u want to applied the changes of a computed field in a bidirectional way, so its modification can also set its dependencies fields,
+use an **inverse function**
+
+```py
+from odoo import api, fields, models
+
+class TestComputed(models.Model):
+    _name = "test.computed"
+
+    total = fields.Float(compute="_compute_total", inverse="_inverse_total")
+    amount = fields.Float()
+
+    @api.depends("amount")
+    def _compute_total(self):
+        for record in self:
+            record.total = 2.0 * record.amount
+
+    def _inverse_total(self): # Here we inverse the operation to set the related dependency field value
+        for record in self:
+            record.amount = record.total / 2.0
+```
+
+**NOTE:** The **inverse** method is called when **saving** the record, while the **compute** method is called at **each change** of its dependencies.
+
+**Computed fields** are **not stored** in the database by default. Therefore it is **not possible** to **search** on a **computed field** unless a search method is defined.
+The **more complex** is your field to compute (e.g. with a **lot of dependencies** or when a **computed field depends on other computed fields**), the **more time it will take to compute**
+
+### On Change (Only triggered on the form view)
+
+Provides a **way** for the client interface to **update a form** **without saving anything to the database** whenever the user has filled in a field value
+**self** represents the **record** in the **form view** and decorate it with **onchange()** to specify which field it is triggered by. Any **change you make on self** will be **reflected** on the form:
+
+**Alert:** Never ever use an **onchange** to add business logic to your model
+
+```py
+from odoo import api, fields, models
+
+class TestOnchange(models.Model):
+    _name = "test.onchange"
+
+    name = fields.Char(string="Name")
+    description = fields.Char(string="Description")
+    partner_id = fields.Many2one("res.partner", string="Partner")
+
+    @api.onchange("partner_id")
+    def _onchange_partner_id(self):
+        self.name = "Document for %s" % (self.partner_id.name)
+        self.description = "Default description for %s" % (self.partner_id.name)
+```
+
+**Note:** Always prefer computed fields since they are also triggered outside of the context of a form view
