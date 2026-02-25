@@ -47,6 +47,12 @@ access some community modules. Finally, there is also the paid option
   - Add the field to the form view as depicted in the first image of this section’s Goal.
 - In our real estate example, we can **define a validity duration** for an **offer** and **set a validity date**. We would like to be able to **set** either the **duration** or the **date** with one impacting the other.
 - In our real estate module, we also want to help the user with data entry. When the **‘garden’ field is set**, we want to give a **default value for the garden area (10)** **as well** as the **orientation (North)**. Additionally, when the ‘garden’ field is unset we want the garden area to reset to zero and the orientation to be removed.
+- In our real estate example, we would like to be able to:
+  - cancel or set a property as sold
+    TIP: (A canceled property cannot be sold and a sold property cannot be canceled)
+  - accept or refuse an offer
+  - when an offer is accepted we want to set the selling price and the buyer for the property
+    TIP: Only one offer can be accepted for a given property
 
 ## TIPS
 
@@ -217,8 +223,7 @@ def _compute_description(self):
 
 ### Inverse functions
 
-When u want to applied the changes of a computed field in a bidirectional way, so its modification can also set its dependencies fields,
-use an **inverse function**
+When u want to applied the changes of a computed field in a bidirectional way, so its modification can also set its dependencies fields, use an **inverse function**
 
 ```py
 from odoo import api, fields, models
@@ -244,10 +249,9 @@ class TestComputed(models.Model):
 **Computed fields** are **not stored** in the database by default. Therefore it is **not possible** to **search** on a **computed field** unless a search method is defined.
 The **more complex** is your field to compute (e.g. with a **lot of dependencies** or when a **computed field depends on other computed fields**), the **more time it will take to compute**
 
-### On Change (Only triggered on the form view)
+## On Change (Only triggered on the form view)
 
-Provides a **way** for the client interface to **update a form** **without saving anything to the database** whenever the user has filled in a field value
-**self** represents the **record** in the **form view** and decorate it with **onchange()** to specify which field it is triggered by. Any **change you make on self** will be **reflected** on the form:
+Provides a **way** for the client interface to **update a form** **without saving anything to the database** whenever the user has filled in a field value **self** represents the **record** in the **form view** and decorate it with **onchange()** to specify which field it is triggered by. Any **change you make on self** will be **reflected** on the form:
 
 **Alert:** Never ever use an **onchange** to add business logic to your model
 
@@ -268,3 +272,49 @@ class TestOnchange(models.Model):
 ```
 
 **Note:** Always prefer computed fields since they are also triggered outside of the context of a form view
+
+## Actions
+
+Way of add some business logic into action buttons
+
+```xml
+<form>
+    <header>
+        <button name="action_do_something" type="object" string="Do Something"/>
+    </header>
+    <sheet>
+        <field name="name"/>
+    </sheet>
+</form>
+```
+
+```py
+from odoo import fields, models
+
+class TestAction(models.Model):
+    _name = "test.action"
+
+    name = fields.Char()
+
+    def action_do_something(self):
+        for record in self:
+            record.name = "Something"
+        return True
+```
+
+### Notes
+
+- By assigning type="object" to our button, the Odoo framework will execute a Python method with name="action_do_something" on the related model.
+- Actions methods names are public since doesnt carry an underscore (_) prefix. These methods will later be
+called from the Odoo interface through an RPC call
+- Always define your methods as private unless they need to be called directly from the user interface
+- Also note that we loop on self. Always assume that a method can be called on multiple records; it’s better for reusability.
+- A public method should always return something so that it can be called through XML-RPC
+- You can link an action to a button by doing this:
+
+```xml
+<button type="action" name="%(test.test_model_action)d" string="My Action"/>
+```
+
+## Constraints
+

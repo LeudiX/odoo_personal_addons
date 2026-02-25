@@ -48,3 +48,20 @@ class EstatePropertyOffer(models.Model):
         for rec in self:
             date = rec.create_date.date() if rec.create_date else fields.Date.today()
             rec.validity_days = (rec.date_deadline - date).days
+
+    # Actions
+
+    def action_accept_offer(self):
+        if "accepted" in self.mapped("property_id.offer_ids.status"):
+            raise UserError("An offer has already been accepted.")
+        self.write({"status": "accepted"})
+        return self.mapped("property_id").write(
+            {
+                "state": "offer_accepted",
+                "selling_price": self.price,
+                "buyer_id": self.partner_id.id,
+            }
+        )
+
+    def action_refuse_offer(self):
+        return self.write({"status": "refused"})

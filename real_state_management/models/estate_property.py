@@ -126,3 +126,15 @@ class EstateProperty(models.Model):
 
     def _default_availability_date(self):
         return fields.Date.context_today(self) + relativedelta(months=3)
+
+    # Actions
+
+    def action_sold(self):
+        if "canceled" in self.mapped("state"):
+            raise UserError("Canceled properties cannot be sold.")
+        return self.write({"state": "sold"})
+
+    def action_cancel(self):
+        if "sold" in self.mapped("state"):
+            raise UserError("Sold properties cannot be canceled.")
+        return self.write({"state": "canceled"})
