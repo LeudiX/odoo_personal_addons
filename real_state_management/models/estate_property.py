@@ -12,15 +12,30 @@ _logger = logging.getLogger(__name__)
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
-    _inherit = ["mail.thread", "mail.activity.mixin"]
+    _inherit = ["avatar.mixin", "mail.thread", "mail.activity.mixin"]
     _order = "id desc"
     _sql_constraints = [
-        ("check_expected_price", "CHECK(expected_price > 0)", "The expected price must be strictly positive"),
-        ("check_selling_price", "CHECK(selling_price >= 0)", "The offer price must be positive"),
+        (
+            "check_expected_price",
+            "CHECK(expected_price > 0)",
+            "The expected price must be strictly positive",
+        ),
+        (
+            "check_selling_price",
+            "CHECK(selling_price >= 0)",
+            "The offer price must be positive",
+        ),
     ]
 
     # Basic
     name = fields.Char("Title", required=True)
+    # Optional: alias for clarity (not required)
+    portrait_image = fields.Image(
+        related="avatar_1920",
+        string="Portrait",
+        store=True,
+        readonly=False,
+    )
     description = fields.Text(string=_("Description"))
     postcode = fields.Char(string=_("Postcode"))
     availability_date = fields.Date(
@@ -127,8 +142,8 @@ class EstateProperty(models.Model):
                 < 0
             ):
                 raise ValidationError(
-                    "The selling price must be at least the 90% of the expected price!"
-                    + "You must reduce the expected price if you want to accept this offer."
+                    "The selling price must be at least the 90% of the expected price!.\n"
+                    "You must reduce the expected price if you want to accept this offer."
                 )
 
     @api.onchange("garden")
@@ -155,9 +170,41 @@ class EstateProperty(models.Model):
     def action_sold(self):
         if "canceled" in self.mapped("state"):
             raise UserError("Canceled properties cannot be sold.")
+        if "accepted" not in self.mapped("offer_ids.status"):
+            raise UserError(
+                "You cant sold a property without accept an available offer"
+            )
+        for rec in self.mapped("offer_ids"):
+            if rec.status != "accepted":
+                rec.write({"status": "refused"})
         return self.write({"state": "sold"})
 
     def action_cancel(self):
         if "sold" in self.mapped("state"):
             raise UserError("Sold properties cannot be canceled.")
-        return self.write({"state": "canceled"})
+        if "accepted" not in self.mapped("offer_ids.status"):
+            raise UserError(
+                "You cant cancel a property sell without accept an available offer"
+            )
+        for rec in self.mapped("offer_ids"):
+            rec.write({"status": "refused"})
+        return self.write(
+            {
+                "state": "canceled",
+                "selling_price": None,
+                "buyer_id": None,
+            }
+        )
+
+    def action_reset(self):
+        if not ("sold" or "canceled" in self.mapped("state")):
+            raise UserError("Only sold or canceled properties can be reset.")
+        for rec in self.mapped("offer_ids"):
+            rec.write({"status": None})
+        return self.write(
+            {
+                "state": "offer_received",
+                "selling_price": None,
+                "buyer_id": None,
+            }
+        )

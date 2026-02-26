@@ -58,8 +58,14 @@ class EstatePropertyOffer(models.Model):
     def action_accept_offer(self):
         if "accepted" in self.mapped("property_id.offer_ids.status"):
             raise UserError("An offer has already been accepted.")
+
+        #  Accepting current offer
         self.write({"status": "accepted"})
-        return self.mapped("property_id").write(
+
+        # Updating related property
+        property_rec = self.property_id
+
+        return property_rec.write(
             {
                 "state": "offer_accepted",
                 "selling_price": self.price,
@@ -68,4 +74,12 @@ class EstatePropertyOffer(models.Model):
         )
 
     def action_refuse_offer(self):
-        return self.write({"status": "refused"})
+        self.write({"status": "refused"})
+
+        return self.mapped("property_id").write(
+            {
+                "state": "canceled",
+                "selling_price": None,
+                "buyer_id": None,
+            }
+        )

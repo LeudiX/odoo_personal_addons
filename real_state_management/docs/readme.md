@@ -350,4 +350,5 @@ def _check_date_end(self):
 
 TIP: Always use the **float_compare()** and **float_is_zero()** methods from **odoo.tools.float_utils** when working with floats!
 
-- SQL constraints are usually more efficient than Python constraints. When performance matters, always prefer SQL over Python constraints.
+- **SQL constraints** are usually **more efficient** than Python constraints. When performance matters, always prefer SQL over Python constraints.
+
