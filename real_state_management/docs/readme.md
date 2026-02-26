@@ -53,6 +53,13 @@ access some community modules. Finally, there is also the paid option
   - accept or refuse an offer
   - when an offer is accepted we want to set the selling price and the buyer for the property
     TIP: Only one offer can be accepted for a given property
+- Constraints
+  - A property expected price must be strictly positive
+  - A property selling price must be positive
+  - An offer price must be strictly positive
+  - A property tag name and property type name must be unique
+  - The selling price cannot be lower than 90% of the expected price
+    TIP: Tip: the selling price is zero until an offer is validated. You will need to fine tune your check to take this into account.
 
 ## TIPS
 
@@ -316,5 +323,31 @@ called from the Odoo interface through an RPC call
 <button type="action" name="%(test.test_model_action)d" string="My Action"/>
 ```
 
-## Constraints
+## Constraints Validations
 
+Prevent users for enter incorrect data
+
+- Odoo provides two ways to set up automatically verified invariants: **Python constraints** and **SQL constraints**
+
+### SQL Constraints
+
+- **SQL constraints** are defined through the model attribute **_sql_constraints**. This attribute is assigned a list of triples containing strings **(name, sql_definition, message)**, where name is a **valid SQL constraint** name, **sql_definition is a table_constraint expression** and **message is the error message**.
+
+### Python Constraints
+
+- Method decorated with **@api.constrains()** and is invoked on a recordset. The decorator specifies which fields are involved in the constraint. The **constraint is automatically evaluated when any of these fields are modified**. The method is expected to **raise an exception if its invariant is not satisfied**
+
+```py
+from odoo.exceptions import ValidationError
+
+@api.constrains('date_end')
+def _check_date_end(self):
+    for record in self:
+        if record.date_end < fields.Date.today():
+            raise ValidationError("The end date cannot be set in the past")
+    # all records passed the test, don't return anything
+```
+
+TIP: Always use the **float_compare()** and **float_is_zero()** methods from **odoo.tools.float_utils** when working with floats!
+
+- SQL constraints are usually more efficient than Python constraints. When performance matters, always prefer SQL over Python constraints.

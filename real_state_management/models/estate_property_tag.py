@@ -13,14 +13,14 @@ class EstatePropertyTag(models.Model):
     _name = "estate.property.tag"
     _description = "Property Tag"
 
-    # Basic
-    name = fields.Char("Name", required=True)
-    color = fields.Integer("Color Index", default=lambda self: self._default_color())
-
     # Constraints
     _sql_constraints = [
         ("name_uniq", "unique (name)", "Tag name already exists!"),
     ]
+
+    # Basic
+    name = fields.Char("Name", required=True)
+    color = fields.Integer("Color Index", default=lambda self: self._default_color())
 
     def _default_color(self):
         return randint(1, 11)

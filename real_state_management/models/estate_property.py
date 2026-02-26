@@ -3,6 +3,7 @@ import logging
 from dateutil.relativedelta import relativedelta
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError, ValidationError
+from odoo.tools import float_compare, float_is_zero
 
 
 _logger = logging.getLogger(__name__)
@@ -12,6 +13,11 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
     _inherit = ["mail.thread", "mail.activity.mixin"]
+    _order = "id desc"
+    _sql_constraints = [
+        ("check_expected_price", "CHECK(expected_price > 0)", "The expected price must be strictly positive"),
+        ("check_selling_price", "CHECK(selling_price >= 0)", "The offer price must be positive"),
+    ]
 
     # Basic
     name = fields.Char("Title", required=True)
@@ -107,6 +113,24 @@ class EstateProperty(models.Model):
                 rec.living_area if not rec.garden else rec.living_area + rec.garden_area
             )
 
+    # Constraints
+    @api.constrains("expected_price", "selling_price")
+    def _check_price_difference(self):
+        for rec in self:
+            if (
+                not float_is_zero(rec.selling_price, precision_rounding=0.01)
+                and float_compare(
+                    rec.selling_price,
+                    rec.expected_price * 90.0 / 100.0,
+                    precision_rounding=0.01,
+                )
+                < 0
+            ):
+                raise ValidationError(
+                    "The selling price must be at least the 90% of the expected price!"
+                    + "You must reduce the expected price if you want to accept this offer."
+                )
+
     @api.onchange("garden")
     def _onchange_garden(self):
         if self.garden:
@@ -128,7 +152,6 @@ class EstateProperty(models.Model):
         return fields.Date.context_today(self) + relativedelta(months=3)
 
     # Actions
-
     def action_sold(self):
         if "canceled" in self.mapped("state"):
             raise UserError("Canceled properties cannot be sold.")

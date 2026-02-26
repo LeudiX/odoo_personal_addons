@@ -10,6 +10,10 @@ _logger = logging.getLogger(__name__)
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Property Offer"
+    _order = "price desc"
+    _sql_constraints = [
+        ("check_price", "CHECK(price > 0)", "The price must be strictly positive"),
+    ]
 
     # Basic
     price = fields.Float(string=_("Price"))
