@@ -31,6 +31,7 @@
                 <header>
                     <button name="action_sold" type="object" string="Sold" invisible="state in ['sold','canceled']" class="oe_highlight"/>
                     <button name="action_cancel" type="object" string="Cancel" invisible="state in ['sold','canceled']" class="btn-danger" />
+                    <button name="action_reset" type="object" string="Reset" invisible="state not in ['sold','canceled']" class="btn-success" />
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
@@ -39,6 +40,7 @@
                         <h1>
                             <field name="name" placeholder="Name..."/>
                         </h1>
+                        <field name="portrait_image" widget="image" class="float-end" options="{'size': [150, 150]}"/>
                         <label for="tag_ids"/>
                         <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                     </div>
@@ -78,7 +80,7 @@
                         <page string="Other info">
                             <group>
                                 <field name="salesperson_id"/>
-                                <field name="buyer_id"/>
+                                <field name="buyer_id" readonly="1"/>
                             </group>
                         </page>
                     </notebook>
