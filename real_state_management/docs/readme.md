@@ -45,6 +45,21 @@ access some community modules. Finally, there is also the paid option
 - In our real estate module, we want to compute the best offer.
   - Add the **best_price** field to **estate.property**. It is defined as the **highest** (i.e. maximum) of the **offers’ price**.
   - Add the field to the form view as depicted in the first image of this section’s Goal.
+- In our real estate example, we can **define a validity duration** for an **offer** and **set a validity date**. We would like to be able to **set** either the **duration** or the **date** with one impacting the other.
+- In our real estate module, we also want to help the user with data entry. When the **‘garden’ field is set**, we want to give a **default value for the garden area (10)** **as well** as the **orientation (North)**. Additionally, when the ‘garden’ field is unset we want the garden area to reset to zero and the orientation to be removed.
+- In our real estate example, we would like to be able to:
+  - cancel or set a property as sold
+    TIP: (A canceled property cannot be sold and a sold property cannot be canceled)
+  - accept or refuse an offer
+  - when an offer is accepted we want to set the selling price and the buyer for the property
+    TIP: Only one offer can be accepted for a given property
+- Constraints
+  - A property expected price must be strictly positive
+  - A property selling price must be positive
+  - An offer price must be strictly positive
+  - A property tag name and property type name must be unique
+  - The selling price cannot be lower than 90% of the expected price
+    TIP: Tip: the selling price is zero until an offer is validated. You will need to fine tune your check to take this into account.
 
 ## TIPS
 
@@ -212,3 +227,127 @@ def _compute_description(self):
     for record in self:
         record.description = "Test for partner %s" % record.partner_id.name
 ```
+
+### Inverse functions
+
+When u want to applied the changes of a computed field in a bidirectional way, so its modification can also set its dependencies fields, use an **inverse function**
+
+```py
+from odoo import api, fields, models
+
+class TestComputed(models.Model):
+    _name = "test.computed"
+
+    total = fields.Float(compute="_compute_total", inverse="_inverse_total")
+    amount = fields.Float()
+
+    @api.depends("amount")
+    def _compute_total(self):
+        for record in self:
+            record.total = 2.0 * record.amount
+
+    def _inverse_total(self): # Here we inverse the operation to set the related dependency field value
+        for record in self:
+            record.amount = record.total / 2.0
+```
+
+**NOTE:** The **inverse** method is called when **saving** the record, while the **compute** method is called at **each change** of its dependencies.
+
+**Computed fields** are **not stored** in the database by default. Therefore it is **not possible** to **search** on a **computed field** unless a search method is defined.
+The **more complex** is your field to compute (e.g. with a **lot of dependencies** or when a **computed field depends on other computed fields**), the **more time it will take to compute**
+
+## On Change (Only triggered on the form view)
+
+Provides a **way** for the client interface to **update a form** **without saving anything to the database** whenever the user has filled in a field value **self** represents the **record** in the **form view** and decorate it with **onchange()** to specify which field it is triggered by. Any **change you make on self** will be **reflected** on the form:
+
+**Alert:** Never ever use an **onchange** to add business logic to your model
+
+```py
+from odoo import api, fields, models
+
+class TestOnchange(models.Model):
+    _name = "test.onchange"
+
+    name = fields.Char(string="Name")
+    description = fields.Char(string="Description")
+    partner_id = fields.Many2one("res.partner", string="Partner")
+
+    @api.onchange("partner_id")
+    def _onchange_partner_id(self):
+        self.name = "Document for %s" % (self.partner_id.name)
+        self.description = "Default description for %s" % (self.partner_id.name)
+```
+
+**Note:** Always prefer computed fields since they are also triggered outside of the context of a form view
+
+## Actions
+
+Way of add some business logic into action buttons
+
+```xml
+<form>
+    <header>
+        <button name="action_do_something" type="object" string="Do Something"/>
+    </header>
+    <sheet>
+        <field name="name"/>
+    </sheet>
+</form>
+```
+
+```py
+from odoo import fields, models
+
+class TestAction(models.Model):
+    _name = "test.action"
+
+    name = fields.Char()
+
+    def action_do_something(self):
+        for record in self:
+            record.name = "Something"
+        return True
+```
+
+### Notes
+
+- By assigning type="object" to our button, the Odoo framework will execute a Python method with name="action_do_something" on the related model.
+- Actions methods names are public since doesnt carry an underscore (_) prefix. These methods will later be
+called from the Odoo interface through an RPC call
+- Always define your methods as private unless they need to be called directly from the user interface
+- Also note that we loop on self. Always assume that a method can be called on multiple records; it’s better for reusability.
+- A public method should always return something so that it can be called through XML-RPC
+- You can link an action to a button by doing this:
+
+```xml
+<button type="action" name="%(test.test_model_action)d" string="My Action"/>
+```
+
+## Constraints Validations
+
+Prevent users for enter incorrect data
+
+- Odoo provides two ways to set up automatically verified invariants: **Python constraints** and **SQL constraints**
+
+### SQL Constraints
+
+- **SQL constraints** are defined through the model attribute **_sql_constraints**. This attribute is assigned a list of triples containing strings **(name, sql_definition, message)**, where name is a **valid SQL constraint** name, **sql_definition is a table_constraint expression** and **message is the error message**.
+
+### Python Constraints
+
+- Method decorated with **@api.constrains()** and is invoked on a recordset. The decorator specifies which fields are involved in the constraint. The **constraint is automatically evaluated when any of these fields are modified**. The method is expected to **raise an exception if its invariant is not satisfied**
+
+```py
+from odoo.exceptions import ValidationError
+
+@api.constrains('date_end')
+def _check_date_end(self):
+    for record in self:
+        if record.date_end < fields.Date.today():
+            raise ValidationError("The end date cannot be set in the past")
+    # all records passed the test, don't return anything
+```
+
+TIP: Always use the **float_compare()** and **float_is_zero()** methods from **odoo.tools.float_utils** when working with floats!
+
+- SQL constraints are usually more efficient than Python constraints. When performance matters, always prefer SQL over Python constraints.

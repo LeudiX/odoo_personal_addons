@@ -10,11 +10,10 @@ _logger = logging.getLogger(__name__)
 class EstatePropertyType(models.Model):
     _name = "estate.property.type"
     _description = "Property Type"
-
-    # Basic
-    name = fields.Char("Name", required=True)
-
     # Constraints
     _sql_constraints = [
         ("name_uniq", "unique (name)", "Type name already exists for this property!"),
     ]
+
+    # Basic
+    name = fields.Char("Name", required=True)
