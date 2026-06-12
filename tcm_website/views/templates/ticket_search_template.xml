@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="ticket_search_page" name="Ticket Search Page">
+        <t t-call="pyxel_tcm_website.base_layout">
+            <xpath expr="//div[@id='wrap']" position="inside">
+                <section class="container mt-4">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8">
+                            <h2 class="text-center mb-4">🔍Verifique el estado de su solicitud</h2>
+                            <owl-component name="pyxel_tcm_website.TicketSearch"/>
+                        </div>
+                    </div>
+                </section>
+            </xpath>
+        </t>
+    </template>
+</odoo>

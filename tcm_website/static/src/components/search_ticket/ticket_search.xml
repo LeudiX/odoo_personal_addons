@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="pyxel_tcm_website.ticket_search" owl="1">
+        <div class="ticket-search-card">
+            <!-- Search Field Group -->
+            <div class="mb-4">
+                <label class="form-label fw-bold">No. de Ticket</label>
+                <div class="input-group">
+                    <input type="text" class="form-control form-control-lg rounded-pill" t-att-class="{'is-valid': state.isValid and state.ticketNumber, 'is-invalid': !state.isValid and state.ticketNumber}" placeholder="e.g., SOL04/2026_001" t-model="state.ticketNumber" t-on-input="onInput"/>
+                    <button class="btn btn-primary rounded-circle d-flex align-items-center justify-content-center mx-2" style="width: 48px;" t-on-click="onCheck" t-att-disabled="state.loading">
+                        <i t-attf-class="fa {{ state.loading ? 'fa-spinner fa-spin' : 'fa-search' }}"></i>
+                    </button>
+                </div>
+                <!-- Validation message -->
+                <div t-if="state.ticketNumber" class="mt-2">
+                    <span t-attf-class="{{ state.isValid ? 'text-success' : 'text-danger' }}">
+                        <t t-esc="state.validationMessage"/>
+                    </span>
+                </div>
+                <div class="form-text text-muted">
+                    Formato: <strong class="text-danger">SOL</strong> <strong class="text-success">2 dígitos (mes)</strong> / <strong class="text-warning">año</strong> _ <strong class="text-primary">3 dígitos</strong>
+                    <br/>
+                    Ejemplo: SOL04/2026_001
+                </div>
+            </div>
+
+            <!-- Loading indicator -->
+            <div t-if="state.loading" class="text-center my-4">
+                <i class="fa fa-spinner fa-spin fa-2x"></i>
+                <p class="mt-2">Buscando...</p>
+            </div>
+
+            <!-- Result Card (Fancy container) -->
+            <div t-if="state.result and !state.loading" class="card shadow-lg border-0 my-4">
+                <div class="card-header bg-success text-white">
+                    <h4 class="mb-0">
+                        <i class="fa fa-ticket me-2"/>
+                    Ticket Encontrado</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p>
+                                <strong>
+                                    <i class="fa fa-hashtag me-1"/>
+No. de ticket:</strong>
+                                <span class="text-primary" t-esc="state.result.ticket"/>
+                            </p>
+                            <p>
+                                <strong>
+                                    <i class="fa fa-tag me-1"/>
+Título:</strong>
+                                <t t-esc="state.result.title"/>
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <p>
+                                <strong>
+                                    <i class="fa fa-info-circle me-1"/>
+Estado actual:</strong>
+                                <span class="badge bg-info ms-2 fs-6 p-2" t-esc="state.result.status"/>
+                            </p>
+                            <p>
+                                <strong>
+                                    <i class="fa fa-calendar me-1"/>
+Fecha de creación:</strong>
+                                <t t-esc="state.result.create_date"/>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-light">
+                    <small class="text-muted">Gracias por utilizar nuestro sistema de seguimiento de tickets.</small>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

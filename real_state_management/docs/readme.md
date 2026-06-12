@@ -279,6 +279,7 @@ class TestOnchange(models.Model):
 ```
 
 **Note:** Always prefer computed fields since they are also triggered outside of the context of a form view
+**Note:** Computed fields are read-only by default at less you use a inverse compute method
 
 ## Actions
 

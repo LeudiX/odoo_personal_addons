@@ -88,7 +88,7 @@ Examples:
 
 ## Dynamic Assets
 
-- Bundling rules' model (ir.asset): Model representation of the assets in the database
+- Bundling rules model (ir.asset): Model representation of the assets in the database
 - _get_addons_paths
 - Last Resort
 - Debugging [Dev mode, Monkey Extension (Odoo Debug) , debugger, --dev=all, Browser Inspector]

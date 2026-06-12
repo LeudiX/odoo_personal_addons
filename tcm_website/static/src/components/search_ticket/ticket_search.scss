@@ -1,0 +1,33 @@
+.ticket-search-card {
+    max-width: 700px;
+    margin: 0 auto;
+
+    .rounded-circle {
+        border-radius: 50% !important;
+        margin-left: -1px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        transition: all 0.2s ease;
+
+        &:hover:not(:disabled) {
+            transform: scale(1.05);
+            background-color: darken(#007bff, 10%);
+        }
+    }
+
+    .card {
+        border-radius: 1rem;
+        transition: transform 0.2s;
+        &:hover {
+            transform: translateY(-2px);
+        }
+    }
+
+    .is-valid {
+        border-color: #28a745;
+        background-image: url("data:image/svg+xml,...");
+    }
+
+    .is-invalid {
+        border-color: #dc3545;
+    }
+}
